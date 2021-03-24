@@ -5,11 +5,21 @@ import OverlayUI from './OverlayUI';
 
 const App = () => {
 	const [favorites, setFavorites] = useState([]);
+	const [results, setResults] = useState([]);
 
 	return (
 		<div className="App">
-			<MapView setFavorites={setFavorites} />
-			<OverlayUI favorites={favorites} />
+			<MapView
+				favorites={favorites}
+				setFavorites={setFavorites}
+				results={results}
+				setResults={setResults}
+			/>
+			<OverlayUI
+				favorites={favorites}
+				setFavorites={setFavorites}
+				results={results}
+			/>
 		</div>
 	);
 };

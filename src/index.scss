@@ -38,3 +38,39 @@ code {
 	padding: 1em;
 	margin: 1em;
 }
+
+.mapboxgl-popup-content {
+	min-width: 300px;
+	border: 2px solid fuchsia;
+
+	h5 {
+		font-size: 20px;
+		margin: 0;
+	}
+	p {
+		font-size: 14px;
+		margin-bottom: 0;
+	}
+}
+
+.mapboxgl-popup-anchor-bottom,
+.mapboxgl-popup-tip {
+	border-top-color: fuchsia !important;
+}
+
+.mapboxgl-popup-anchor-top .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip {
+	border-bottom-color: fuchsia !important;
+}
+.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip {
+	border-bottom-color: fuchsia !important;
+}
+.mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
+	border-bottom-color: fuchsia !important;
+}
+.mapboxgl-popup-anchor-right .mapboxgl-popup-tip {
+	border-bottom-color: fuchsia !important;
+}
