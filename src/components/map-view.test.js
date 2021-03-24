@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 import { mountToJson } from 'enzyme-to-json';
 import mapboxGl from 'mapbox-gl';
 
-const mockInstantiationTracker = jest.fn();
+// const mockInstantiationTracker = jest.fn();
 
 jest.mock('mapbox-gl', () => ({
 	Map: jest.fn(),

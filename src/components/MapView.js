@@ -1,5 +1,5 @@
 import React from 'react';
-import mapboxGl from 'mapbox-gl';
+import mapboxGl, { Marker } from 'mapbox-gl';
 import style from '../data/style.json';
 import { ACCESS_TOKEN, buildQueryParams } from '../constants';
 
@@ -27,12 +27,21 @@ class MapView extends React.Component {
 			map.on('click', (e) => {
 				console.log(e.lngLat);
 				const { lng, lat } = e.lngLat;
+				map.panTo(e.lngLat);
 
 				fetch(
 					`https://api.mapbox.com/v4/mapbox.mapbox-streets-v8/tilequery/${lng},${lat}.json?${buildQueryParams()}`
 				)
 					.then((res) => res.json())
-					.then((res) => console.log(res));
+					.then((res) => {
+						console.log(res);
+						res.features.forEach((feature) => {
+							const marker = new Marker()
+								.setLngLat(feature.geometry.coordinates)
+								.addTo(map);
+						});
+					})
+					.catch((e) => console.log(e));
 			});
 		}
 	};
