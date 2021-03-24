@@ -1,10 +1,7 @@
 import React from 'react';
 import mapboxGl from 'mapbox-gl';
-import style from './data/style.json';
-
-// If there are issues, replace with your token
-const ACCESS_TOKEN =
-	'pk.eyJ1IjoiZGFzdWxpdCIsImEiOiJjaXQzYmFjYmkwdWQ5MnBwZzEzZnNub2hhIn0.EDJ-lIfX2FnKhPw3nqHcqg';
+import style from '../data/style.json';
+import { ACCESS_TOKEN, buildQueryParams } from '../constants';
 
 class MapView extends React.Component {
 	constructor() {
@@ -26,6 +23,17 @@ class MapView extends React.Component {
 				zoom: 15,
 			});
 			this.setState({ map });
+
+			map.on('click', (e) => {
+				console.log(e.lngLat);
+				const { lng, lat } = e.lngLat;
+
+				fetch(
+					`https://api.mapbox.com/v4/mapbox.mapbox-streets-v8/tilequery/${lng},${lat}.json?${buildQueryParams()}`
+				)
+					.then((res) => res.json())
+					.then((res) => console.log(res));
+			});
 		}
 	};
 
@@ -34,4 +42,4 @@ class MapView extends React.Component {
 	}
 }
 
-export { MapView };
+export default MapView;
