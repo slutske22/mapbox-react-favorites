@@ -17,6 +17,7 @@ const App = () => {
 	return (
 		<div className="App">
 			<MapView
+				favorites={favorites}
 				setFavorites={setFavorites}
 				results={results}
 				setResults={setResults}

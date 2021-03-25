@@ -4,11 +4,70 @@ import style from '../data/style.json';
 import { ACCESS_TOKEN, buildQueryParams } from '../constants';
 import { usePrevious } from '../utils';
 
-const MapView = ({ results, setResults, setFavorites }) => {
+const MapView = ({ results, setResults, favorites, setFavorites }) => {
+	const prevResults = usePrevious(results);
 	const mapContainer = useRef();
 	const [map, setMap] = useState();
 
-	const prevResults = usePrevious(results);
+	const removeResultsMarkers = React.useCallback(
+		() => {
+			console.log('results', results);
+			// prevResults && prevResults.forEach((result) => result.marker.remove());
+			results.forEach((result) => result.marker.remove());
+		},
+		[results]
+	);
+
+	/**
+	 * Function to create marker on map when tilequery results come back
+	 * along with popup, and handler to add place to favorites
+	 */
+	const createMarker = (feature, map) => {
+		const { name, category_en } = feature.properties;
+
+		// Create marker and popup
+		const marker = new Marker({ color: '#C0C0C0' }).setLngLat(
+			feature.geometry.coordinates
+		);
+		const popup = new Popup({ closeButton: false })
+			.setHTML(
+				`${name ? `<h5>${name}</h5>` : ''}
+					 ${category_en ? `<p>${category_en}</p>` : ''}`
+			)
+			.setMaxWidth('500px');
+		marker.setPopup(popup);
+		marker.getElement().addEventListener('mouseenter', () => {
+			marker.getPopup().addTo(map);
+		});
+		marker.getElement().addEventListener('mouseleave', () => {
+			marker.getPopup().remove();
+		});
+
+		const item = {
+			feature,
+			marker,
+		};
+
+		// Add event listener on marker click to add to favorites
+		marker.getElement().addEventListener('click', (e) => {
+			e.stopPropagation();
+			removeResultsMarkers();
+			setFavorites((prevFavs) => {
+				// See if user already has this location in their favorites
+				const preexistingFavorite = prevFavs.find(
+					(fav) => fav.feature.id === feature.id
+				);
+				if (preexistingFavorite) {
+					// Trigger some UI actions to let user know this is already in their list
+					return prevFavs;
+				}
+				// Add to list
+				return [...prevFavs, item];
+			});
+		});
+
+		return item;
+	};
 
 	/**
 	 * On component mount:
@@ -34,39 +93,9 @@ const MapView = ({ results, setResults, setFavorites }) => {
 				)
 					.then((res) => res.json())
 					.then((res) => {
-						const results = res.features.map((feature) => {
-							const { name, category_en } = feature.properties;
-
-							const marker = new Marker().setLngLat(
-								feature.geometry.coordinates
-							);
-							const popup = new Popup({ closeButton: false })
-								.setHTML(
-									`${name ? `<h5>${name}</h5>` : ''}
-									 ${category_en ? `<p>${category_en}</p>` : ''}`
-								)
-								.setMaxWidth('500px');
-							marker.setPopup(popup);
-
-							marker.getElement().addEventListener('mouseenter', () => {
-								marker.getPopup().addTo(map);
-							});
-							marker.getElement().addEventListener('mouseleave', () => {
-								marker.getPopup().remove();
-							});
-
-							const item = {
-								feature,
-								marker,
-							};
-
-							marker.getElement().addEventListener('click', (e) => {
-								e.stopPropagation();
-								setFavorites((prevFavs) => [...prevFavs, item]);
-							});
-
-							return item;
-						});
+						const results = res.features.map((feature) =>
+							createMarker(feature, map)
+						);
 						setResults(results);
 						console.log(res);
 					})
@@ -76,7 +105,7 @@ const MapView = ({ results, setResults, setFavorites }) => {
 	}, []);
 
 	/**
-	 * Manage markers for results when results change
+	 * Manage markers for tilequery results when results change
 	 */
 	useEffect(
 		() => {
@@ -104,6 +133,16 @@ const MapView = ({ results, setResults, setFavorites }) => {
 			}
 		},
 		[map, results]
+	);
+
+	useEffect(
+		() => {
+			favorites.forEach((favorite) => {
+				favorite.marker.remove();
+				favorite.marker.addTo(map);
+			});
+		},
+		[map, favorites]
 	);
 
 	return <div ref={mapContainer} className="map-container" />;
