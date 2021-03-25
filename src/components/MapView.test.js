@@ -6,9 +6,9 @@ import { Map } from 'mapbox-gl';
 
 const mockInstantiationTracker = jest.fn();
 
-// jest.mock('mapbox-gl', () => ({
-// 	Map: jest.fn(),
-// }));
+jest.mock('mapbox-gl', () => ({
+	Map: jest.fn(),
+}));
 
 describe('MapView', () => {
 	let wrapper;
@@ -17,10 +17,10 @@ describe('MapView', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 
-		// Map.mockImplementation(() => ({
-		// 	mockMethod: mockFn,
-		// 	on: mockFn,
-		// }));
+		Map.mockImplementation(() => ({
+			mockMethod: mockFn,
+			on: mockFn,
+		}));
 
 		wrapper = mount(<MapView />);
 	});
