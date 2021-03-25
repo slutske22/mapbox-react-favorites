@@ -5,8 +5,6 @@ import { ACCESS_TOKEN, buildQueryParams } from '../constants';
 import HeartMarker from '../assets/heart-marker-blue.png';
 
 class MapView extends React.Component {
-	state = { map: null };
-
 	mapContainer = React.createRef();
 
 	componentDidMount() {
@@ -18,9 +16,7 @@ class MapView extends React.Component {
 				center: [-122.396449, 37.791256],
 				zoom: 15,
 			});
-			this.setState({ map });
-
-			console.log('console.log map', map);
+			this.props.setMap(map);
 
 			map.on('click', (e) => {
 				const { lng, lat } = e.lngLat;
@@ -54,7 +50,7 @@ class MapView extends React.Component {
 		const prevFavorites = prevProps?.favorites;
 		const { results } = this.props;
 		const { favorites } = this.props;
-		const { map } = this.state;
+		const { map } = this.props;
 		/**
 		 * Check if query results have changed:
 		 */
@@ -140,7 +136,7 @@ class MapView extends React.Component {
 
 		// Set mouseover handlers on query markers
 		marker.getElement().addEventListener('mouseenter', () => {
-			marker.getPopup().addTo(this.state.map);
+			marker.getPopup().addTo(this.props.map);
 		});
 		marker.getElement().addEventListener('mouseleave', () => {
 			marker.getPopup().remove();
@@ -176,7 +172,7 @@ class MapView extends React.Component {
 
 		// Dont run query when user clicks on a favorited marker
 		favMarker.getElement().addEventListener('click', (e) => {
-			favMarker.getPopup().addTo(this.state.map);
+			favMarker.getPopup().addTo(this.props.map);
 			e.stopPropagation();
 		});
 

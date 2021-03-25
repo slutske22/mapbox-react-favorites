@@ -4,6 +4,7 @@ import MapView from './MapView';
 import OverlayUI from './OverlayUI';
 
 const App = () => {
+	const [map, setMap] = useState();
 	const [favorites, setFavorites] = useState([]);
 	const [results, setResults] = useState([]);
 
@@ -18,12 +19,15 @@ const App = () => {
 	return (
 		<div className="App">
 			<MapView
+				map={map}
+				setMap={setMap}
 				favorites={favorites}
 				setFavorites={setFavorites}
 				results={results}
 				setResults={setResults}
 			/>
 			<OverlayUI
+				map={map}
 				favorites={favorites}
 				setFavorites={setFavorites}
 				results={results}

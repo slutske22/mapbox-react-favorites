@@ -3,7 +3,7 @@ import { GrFavorite } from 'react-icons/gr';
 import { ImCross } from 'react-icons/im';
 import './OverlayUI.scss';
 
-const OverlayUI = ({ results, setResults, favorites, setFavorites }) => {
+const OverlayUI = ({ map, results, setResults, favorites, setFavorites }) => {
 	/**
 	 * Function to remove favorite from state
 	 */
@@ -42,10 +42,20 @@ const OverlayUI = ({ results, setResults, favorites, setFavorites }) => {
 								properties: { name, category_en },
 							} = favorite.feature;
 							return (
-								<li>
+								<li
+									onClick={() => {
+										const [lng, lat] = favorite.feature.geometry.coordinates;
+										map.flyTo({ center: [lng, lat], zoom: 16 });
+									}}
+								>
 									<h5>{name}</h5>
 									{category_en && <p>{category_en}</p>}
-									<button onClick={() => removeFavorite(id)}>
+									<button
+										onClick={(e) => {
+											e.stopPropagation();
+											removeFavorite(id);
+										}}
+									>
 										<ImCross size={18} />
 									</button>
 								</li>
