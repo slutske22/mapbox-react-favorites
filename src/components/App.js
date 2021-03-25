@@ -7,12 +7,13 @@ const App = () => {
 	const [favorites, setFavorites] = useState([]);
 	const [results, setResults] = useState([]);
 
-	useEffect(
-		() => {
-			console.log('favorites', favorites);
-		},
-		[favorites]
-	);
+	useEffect(() => {
+		console.log('favorites', favorites);
+	}, [favorites]);
+
+	useEffect(() => {
+		console.log('results', results);
+	}, [results]);
 
 	return (
 		<div className="App">
