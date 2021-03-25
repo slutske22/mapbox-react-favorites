@@ -27,6 +27,7 @@ const App = () => {
 				favorites={favorites}
 				setFavorites={setFavorites}
 				results={results}
+				setResults={setResults}
 			/>
 		</div>
 	);

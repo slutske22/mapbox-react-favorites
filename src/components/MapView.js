@@ -2,9 +2,10 @@ import React from 'react';
 import mapboxGl, { Marker, LngLatBounds, Popup } from 'mapbox-gl';
 import style from '../data/style.json';
 import { ACCESS_TOKEN, buildQueryParams } from '../constants';
+import HeartMarker from '../assets/heart-marker-blue.png';
 
 class MapView extends React.Component {
-	state = { map: null, results: [] };
+	state = { map: null };
 
 	mapContainer = React.createRef();
 
@@ -29,7 +30,7 @@ class MapView extends React.Component {
 					.then((res) => res.json())
 					.then((res) => {
 						// Only put query markers on the map that are not already favorites:
-						const { favorites } = this.props;
+						const { favorites, setResults } = this.props;
 						const favoriteIds = favorites.map(
 							(favorite) => favorite.feature.id
 						);
@@ -39,17 +40,17 @@ class MapView extends React.Component {
 						const results = newFeatures.map((feature) =>
 							this.createMarker(feature)
 						);
-						this.setState({ results });
+						setResults(results);
 					})
 					.catch((e) => console.log(e));
 			});
 		}
 	}
 
-	componentDidUpdate(prevProps, prevState) {
-		const prevResults = prevState?.results;
+	componentDidUpdate(prevProps) {
+		const prevResults = prevProps?.results;
 		const prevFavorites = prevProps?.favorites;
-		const { results } = this.state;
+		const { results } = this.props;
 		const { favorites } = this.props;
 		const { map } = this.state;
 		/**
@@ -115,7 +116,16 @@ class MapView extends React.Component {
 		marker.setPopup(popup);
 
 		// Different color marker and different popup behavior for favorite
-		const favMarker = new Marker({ color: '#000094' }).setLngLat(
+		// Custom icon:
+		var el = document.createElement('div');
+		el.className = 'marker';
+		el.style.backgroundImage = `url(${HeartMarker})`;
+		el.style.width = '27px';
+		el.style.height = '41px';
+		el.style.backgroundSize = '100%';
+		el.style.marginBottom = '4px';
+		// Marker definition
+		const favMarker = new Marker({ element: el, offset: [0, -16] }).setLngLat(
 			feature.geometry.coordinates
 		);
 		const favPopup = new Popup()
@@ -136,7 +146,7 @@ class MapView extends React.Component {
 
 		// Add event listener on marker click to add to favorites
 		marker.getElement().addEventListener('click', (e) => {
-			const { results } = this.state;
+			const { results, setResults } = this.props;
 
 			e.stopPropagation();
 			console.log('results from click', results);
@@ -159,6 +169,7 @@ class MapView extends React.Component {
 					},
 				];
 			});
+			setResults([]);
 		});
 
 		// Dont run query when user clicks on a favorited marker

@@ -3,7 +3,7 @@ import { GrFavorite } from 'react-icons/gr';
 import { ImCross } from 'react-icons/im';
 import './OverlayUI.scss';
 
-const OverlayUI = ({ results, favorites, setFavorites }) => {
+const OverlayUI = ({ results, setResults, favorites, setFavorites }) => {
 	/**
 	 * Function to remove favorite from state
 	 */
@@ -20,9 +20,14 @@ const OverlayUI = ({ results, favorites, setFavorites }) => {
 					Favorite Keeper
 				</h3>
 				{results.length ? (
-					<p>Click one of the result markers to add it to your favorites</p>
+					<>
+						<p>
+							Click one of the search result markers to add it to your favorites
+						</p>
+						<button onClick={() => setResults([])}>Clear Search Results</button>
+					</>
 				) : (
-					<p>Click on the map to see points of interest in the area.</p>
+					<p>Click on the map to search for points of interest in the area.</p>
 				)}
 			</div>
 			<div className="favorites-container card">
