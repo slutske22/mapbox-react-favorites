@@ -28,10 +28,17 @@ class MapView extends React.Component {
 				)
 					.then((res) => res.json())
 					.then((res) => {
-						const results = res.features.map((feature) =>
+						// Only put query markers on the map that are not already favorites:
+						const { favorites } = this.props;
+						const favoriteIds = favorites.map(
+							(favorite) => favorite.feature.id
+						);
+						const newFeatures = res.features.filter(
+							(feature) => !favoriteIds.includes(feature.id)
+						);
+						const results = newFeatures.map((feature) =>
 							this.createMarker(feature)
 						);
-						console.log('results', results);
 						this.setState({ results });
 					})
 					.catch((e) => console.log(e));

@@ -4,6 +4,14 @@ import { ImCross } from 'react-icons/im';
 import './OverlayUI.scss';
 
 const OverlayUI = ({ results, favorites, setFavorites }) => {
+	/**
+	 * Function to remove favorite from state
+	 */
+	const removeFavorite = (id) => {
+		const newFavs = favorites.filter((favorite) => favorite.feature.id !== id);
+		setFavorites(newFavs);
+	};
+
 	return (
 		<div className="overlay-ui-container">
 			<div className="title-container card">
@@ -32,7 +40,7 @@ const OverlayUI = ({ results, favorites, setFavorites }) => {
 								<li>
 									<h5>{name}</h5>
 									{category_en && <p>{category_en}</p>}
-									<button>
+									<button onClick={() => removeFavorite(id)}>
 										<ImCross size={18} />
 									</button>
 								</li>
