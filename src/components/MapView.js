@@ -4,7 +4,7 @@ import style from '../data/style.json';
 import { ACCESS_TOKEN, buildQueryParams } from '../constants';
 import { usePrevious } from '../utils';
 
-const MapView = ({ results, setResults }) => {
+const MapView = ({ results, setResults, setFavorites }) => {
 	const mapContainer = useRef();
 	const [map, setMap] = useState();
 
@@ -26,7 +26,6 @@ const MapView = ({ results, setResults }) => {
 			setMap(map);
 
 			map.on('click', (e) => {
-				console.log(e.lngLat);
 				const { lng, lat } = e.lngLat;
 				map.panTo(e.lngLat);
 
@@ -50,21 +49,23 @@ const MapView = ({ results, setResults }) => {
 							marker.setPopup(popup);
 
 							marker.getElement().addEventListener('mouseenter', () => {
-								console.log('yuppp');
 								marker.getPopup().addTo(map);
 							});
 							marker.getElement().addEventListener('mouseleave', () => {
 								marker.getPopup().remove();
 							});
-							marker.getElement().addEventListener('click', (e) => {
-								e.stopPropagation();
-								console.log('yuppp');
-							});
 
-							return {
+							const item = {
 								feature,
 								marker,
 							};
+
+							marker.getElement().addEventListener('click', (e) => {
+								e.stopPropagation();
+								setFavorites((prevFavs) => [...prevFavs, item]);
+							});
+
+							return item;
 						});
 						setResults(results);
 						console.log(res);

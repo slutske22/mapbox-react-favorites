@@ -5,10 +5,13 @@
 1. Apply prettier for formatting consistency
 2. `git init` to keep track of my changes locally
 3. Organize `src` with `components` folder
+4. Switch over to functional components - easier management of results and favorites with `useEffect`
+   - this was definitely a tradeoff, as I needed `componentDidUpdate(props, prevProps)
 
 ## Packages added
 
 - `node-sass`: because sass is easier than css
+- `react-icons`: because everyone loves icons
 
 ## Interesting challenges
 
