@@ -20,6 +20,8 @@ class MapView extends React.Component {
 			});
 			this.setState({ map });
 
+			console.log('console.log map', map);
+
 			map.on('click', (e) => {
 				const { lng, lat } = e.lngLat;
 				map.panTo(e.lngLat);

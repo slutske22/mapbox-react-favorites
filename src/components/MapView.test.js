@@ -1,31 +1,37 @@
 import React from 'react';
-import { MapView } from './map-view';
+import MapView from './MapView';
 import { mount } from 'enzyme';
 import { mountToJson } from 'enzyme-to-json';
-import mapboxGl from 'mapbox-gl';
+import { Map } from 'mapbox-gl';
 
-// const mockInstantiationTracker = jest.fn();
+const mockInstantiationTracker = jest.fn();
 
-jest.mock('mapbox-gl', () => ({
-	Map: jest.fn(),
-}));
+// jest.mock('mapbox-gl', () => ({
+// 	Map: jest.fn(),
+// }));
 
 describe('MapView', () => {
 	let wrapper;
 	let mockFn = jest.fn();
+
 	beforeEach(() => {
 		jest.clearAllMocks();
-		mapboxGl.Map.mockImplementation(() => {
-			return {
-				mockMethod: mockFn,
-			};
-		});
+
+		// Map.mockImplementation(() => ({
+		// 	mockMethod: mockFn,
+		// 	on: mockFn,
+		// }));
+
 		wrapper = mount(<MapView />);
 	});
+
 	it('renders', () => {
 		expect(mountToJson(wrapper)).toMatchSnapshot();
 	});
+
 	it('initializes mapbox gl', () => {
-		expect(mapboxGl.Map).toHaveBeenCalledTimes(1);
+		expect(Map).toHaveBeenCalledTimes(1);
 	});
+
+	it('makes a tilequery api call when the map is clicked', () => {});
 });
