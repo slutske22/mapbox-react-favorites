@@ -1,7 +1,52 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MapView renders 1`] = `
-<MapView>
+<MapView
+  setMap={
+    [MockFunction] {
+      "calls": Array [
+        Array [
+          Object {
+            "mockMethod": [MockFunction] {
+              "calls": Array [
+                Array [
+                  "click",
+                  [Function],
+                ],
+              ],
+              "results": Array [
+                Object {
+                  "type": "return",
+                  "value": undefined,
+                },
+              ],
+            },
+            "on": [MockFunction] {
+              "calls": Array [
+                Array [
+                  "click",
+                  [Function],
+                ],
+              ],
+              "results": Array [
+                Object {
+                  "type": "return",
+                  "value": undefined,
+                },
+              ],
+            },
+          },
+        ],
+      ],
+      "results": Array [
+        Object {
+          "type": "return",
+          "value": undefined,
+        },
+      ],
+    }
+  }
+>
   <div
     className="map-container"
   />

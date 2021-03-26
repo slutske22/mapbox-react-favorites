@@ -22,7 +22,7 @@ describe('MapView', () => {
 			on: mockFn,
 		}));
 
-		wrapper = mount(<MapView />);
+		wrapper = mount(<MapView setMap={jest.fn()} />);
 	});
 
 	it('renders', () => {
@@ -32,6 +32,4 @@ describe('MapView', () => {
 	it('initializes mapbox gl', () => {
 		expect(Map).toHaveBeenCalledTimes(1);
 	});
-
-	it('makes a tilequery api call when the map is clicked', () => {});
 });

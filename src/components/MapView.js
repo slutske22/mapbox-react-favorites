@@ -55,8 +55,6 @@ class MapView extends React.Component {
 		 * Check if query results have changed:
 		 */
 		if (prevResults !== results) {
-			console.log('results udpated');
-
 			// Remove previous query markers from map (if there are any)
 			if (prevResults?.length) {
 				prevResults.forEach((result) => {
@@ -147,7 +145,6 @@ class MapView extends React.Component {
 			const { results, setResults } = this.props;
 
 			e.stopPropagation();
-			console.log('results from click', results);
 			results.forEach((result) => result.marker.remove());
 			setFavorites((prevFavs) => {
 				// See if user already has this location in their favorites

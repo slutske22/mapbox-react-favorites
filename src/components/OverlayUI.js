@@ -21,10 +21,12 @@ const OverlayUI = ({ map, results, setResults, favorites, setFavorites }) => {
 				</h3>
 				{results.length ? (
 					<>
-						<p>
+						<p id="select-a-result">
 							Click one of the search result markers to add it to your favorites
 						</p>
-						<button onClick={() => setResults([])}>Clear Search Results</button>
+						<button id="clear-results" onClick={() => setResults([])}>
+							Clear Search Results
+						</button>
 					</>
 				) : (
 					<p>Click on the map to search for points of interest in the area.</p>
@@ -33,7 +35,7 @@ const OverlayUI = ({ map, results, setResults, favorites, setFavorites }) => {
 			<div className="favorites-container card">
 				<h3>Favorite Places</h3>
 				{!favorites.length ? (
-					<p>Choose some favorites!</p>
+					<p id="click-the-map">Choose some favorites!</p>
 				) : (
 					<ul>
 						{favorites.map((favorite) => {
@@ -43,6 +45,8 @@ const OverlayUI = ({ map, results, setResults, favorites, setFavorites }) => {
 							} = favorite.feature;
 							return (
 								<li
+									key={id}
+									id={`favorite-li-${id}`}
 									onClick={() => {
 										const [lng, lat] = favorite.feature.geometry.coordinates;
 										map.flyTo({ center: [lng, lat], zoom: 16 });
