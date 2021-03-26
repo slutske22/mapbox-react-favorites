@@ -42,14 +42,19 @@ const OverlayUI = ({ map, results, setResults, favorites, setFavorites }) => {
 						<button
 							id="show-all-button"
 							onClick={() => {
-								// fit map to bounds of the features returned
-								var bounds = new LngLatBounds();
-								favorites.forEach((favorites) => {
-									bounds.extend(favorites.feature.geometry.coordinates);
-								});
-								map.fitBounds(bounds, {
-									padding: { top: 300, bottom: 300, left: 300, right: 700 },
-								});
+								if (favorites.length > 1) {
+									// fit map to bounds of the features returned
+									var bounds = new LngLatBounds();
+									favorites.forEach((favorites) => {
+										bounds.extend(favorites.feature.geometry.coordinates);
+									});
+									map.fitBounds(bounds, {
+										padding: { top: 300, bottom: 300, left: 300, right: 700 },
+									});
+								} else {
+									const [lng, lat] = favorites[0].feature.geometry.coordinates;
+									map.flyTo({ center: [lng, lat], zoom: 16 });
+								}
 							}}
 						>
 							Show All Favorites
