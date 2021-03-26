@@ -1,3 +1,4 @@
+import { LngLatBounds } from 'mapbox-gl';
 import React from 'react';
 import { GrFavorite } from 'react-icons/gr';
 import { ImCross } from 'react-icons/im';
@@ -37,35 +38,52 @@ const OverlayUI = ({ map, results, setResults, favorites, setFavorites }) => {
 				{!favorites.length ? (
 					<p id="click-the-map">Choose some favorites!</p>
 				) : (
-					<ul>
-						{favorites.map((favorite) => {
-							const {
-								id,
-								properties: { name, category_en },
-							} = favorite.feature;
-							return (
-								<li
-									key={id}
-									id={`favorite-li-${id}`}
-									onClick={() => {
-										const [lng, lat] = favorite.feature.geometry.coordinates;
-										map.flyTo({ center: [lng, lat], zoom: 16 });
-									}}
-								>
-									<h5>{name}</h5>
-									{category_en && <p>{category_en}</p>}
-									<button
-										onClick={(e) => {
-											e.stopPropagation();
-											removeFavorite(id);
+					<>
+						<button
+							id="show-all-button"
+							onClick={() => {
+								// fit map to bounds of the features returned
+								var bounds = new LngLatBounds();
+								favorites.forEach((favorites) => {
+									bounds.extend(favorites.feature.geometry.coordinates);
+								});
+								map.fitBounds(bounds, {
+									padding: { top: 300, bottom: 300, left: 300, right: 700 },
+								});
+							}}
+						>
+							Show All Favorites
+						</button>
+						<ul>
+							{favorites.map((favorite) => {
+								const {
+									id,
+									properties: { name, category_en },
+								} = favorite.feature;
+								return (
+									<li
+										key={id}
+										id={`favorite-li-${id}`}
+										onClick={() => {
+											const [lng, lat] = favorite.feature.geometry.coordinates;
+											map.flyTo({ center: [lng, lat], zoom: 16 });
 										}}
 									>
-										<ImCross size={18} />
-									</button>
-								</li>
-							);
-						})}
-					</ul>
+										<h5>{name}</h5>
+										{category_en && <p>{category_en}</p>}
+										<button
+											onClick={(e) => {
+												e.stopPropagation();
+												removeFavorite(id);
+											}}
+										>
+											<ImCross size={18} />
+										</button>
+									</li>
+								);
+							})}
+						</ul>
+					</>
 				)}
 			</div>
 		</div>

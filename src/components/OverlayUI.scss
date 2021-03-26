@@ -97,5 +97,21 @@
 				}
 			}
 		}
+
+		button {
+			position: absolute;
+			top: 12px;
+			right: 20px;
+			background-color: transparent;
+			border: 1px solid fuchsia;
+			cursor: pointer;
+			padding: 5px;
+			transition: background-color 0.25s;
+
+			&:hover {
+				background-color: rgba(255, 0, 255, 0.05);
+				transition: background-color 0.25s;
+			}
+		}
 	}
 }
